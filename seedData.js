@@ -1,4 +1,4 @@
-const seedMusician = [
+  const seedMusician = [
     {
       name: 'Mick Jagger',
       instrument: 'Voice'
@@ -27,5 +27,7 @@ const seedBand = [
     genre: 'Rock'
   }
 ]
+
+
 
 module.exports = { seedMusician, seedBand };
