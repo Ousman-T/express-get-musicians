@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const { Musician } = require("../models/index")
-const { db } = require("../db/connection")
+const { Band } = require('../models/index');
+const { db } = require("../db/connection");
+
 
 const port = 3000;
 
@@ -24,7 +26,9 @@ app.get('/musicians/:id', async (req, res) => {
     }catch(error){
         res.status(500).json({message:'Error retrieving musician', error: error.message});
     }
-})
+});
+
+
 
 
 
