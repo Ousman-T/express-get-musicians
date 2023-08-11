@@ -15,14 +15,27 @@ describe('./musicians endpoint', () => {
     it('gives status 200', async () => {
         const response = await request(app).get('/musicians');
         const responseData = JSON.parse(response.text);
-        console.log(responseData);
+        // console.log(responseData);
         expect(response.statusCode).toBe(200);
     }),
     it('Contains correct properties', async () => {
         const response = await request(app).get('/musicians');
         const responseData2 = JSON.parse(response.text);
-        console.log(responseData2);
+        // console.log(responseData2);
         expect(response.body[0].name).toBe('Mick Jagger');
+    }),
+    it('goes to correct artist', async (req,res) => {
+        const response = await request(app).get('/musicians/:id');
+        console.log(response.body);
+        const musicianId = req.params.id;
+        const foundMusician = await Musician.findByPk(musicianId);
+        if(foundMusician){
+            res.json(foundMusician);
+        }else{
+            res.status(404).json({message:"No artist at endpoint"});
+        };
+        expect(foundMusician.body.name).toBe('Drake');
+        expect(foundMusician.statusCode).toBe(200);
     })
 
     
