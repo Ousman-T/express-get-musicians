@@ -1,0 +1,67 @@
+const express = require('express');
+const musicianRouter = express.Router();
+const {Musician} = require('../models/index');
+
+//TODO: Create a GET /musicians route to return all musicians 
+
+musicianRouter.get('/', async (req, res) => {
+    const musicians = await Musician.findAll({});
+    res.json(musicians);
+});
+
+// TODO: READ BY 1
+musicianRouter.get('/:id', async (req, res) => {
+    const musicianId = req.params.id;
+    try {
+        const foundMusician = await Musician.findByPk(musicianId);
+        if(foundMusician){
+            res.json(foundMusician);
+        }else{
+            res.status(404).json({message:"Musician not found"});
+        }
+    }catch(error){
+        res.status(500).json({message:'Error retrieving musician', error: error.message});
+    }
+});
+
+//TODO: CREATE MUSICIAN
+musicianRouter.post('/', async (req, res, next) => {
+    try{
+        const user = await Musician.create(req.body);
+        if(!user){
+            throw new Error('No user created!');
+        }
+        res.send(user.username);
+    }catch(error){
+        next(error);
+    }
+});
+
+// TODO: UPDATE/PUT MUSICIAN
+musicianRouter.put('/:id', async (req, res, next) => {
+    try{
+        const updated = await Musician.update(req.body, {where:{id:req.params.id}});
+        console.log(updated);
+        if(updated[0] === 0){
+            throw new Error('No update made!');
+        }
+        res.sendStatus(200);
+    }catch(error){
+        next(error);
+    }
+});
+
+//! Todo: DELETE/DESTROY MUSICIAN
+musicianRouter.delete('/:id', async (req, res, next) => {
+    try{
+        const deleted = await Musician.destroy({where:{id:req.params.id}});
+        if(deleted === 0){
+            throw new Error('No musician deleted!')
+        }
+        res.sendStatus(200);
+    }catch(error){
+        next(error);
+    }
+})
+
+module.exports = musicianRouter;

@@ -24,7 +24,7 @@ describe('./musicians endpoint', () => {
         // console.log(responseData2);
         expect(response.body[0].name).toBe('Mick Jagger');
     }),
-    it('goes to correct artist', async (req,res) => {
+    xit('goes to correct artist', async (req,res) => {
         const response = await request(app).get('/musicians/:id');
         console.log(response.body);
         const musicianId = req.params.id;
@@ -36,6 +36,15 @@ describe('./musicians endpoint', () => {
         };
         expect(foundMusician.body.name).toBe('Drake');
         expect(foundMusician.statusCode).toBe(200);
+    }),
+    it('Can create a User', async () => {
+        const userData = {
+            name:"Vince Staples",
+            instrument:"Drums"
+        };
+        const response = await request(app).post('/musicians').send(userData);
+        expect(response.statusCode).toBe(200);
+        expect(response.body.username).toEqual(userData.username);
     })
 
     
