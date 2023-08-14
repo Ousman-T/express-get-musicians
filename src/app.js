@@ -45,9 +45,9 @@ app.post('/musicians', async (req, res, next) => {
 });
 
 // TODO: UPDATE/PUT MUSICIAN
-app.put('/:musician', async (req, res, next) => {
+app.put('/musicians/:id', async (req, res, next) => {
     try{
-        const updated = await Musician.update(req.body, {where:{name:req.params.body.name}});
+        const updated = await Musician.update(req.body, {where:{id:req.params.id}});
         console.log(updated);
         if(updated[0] === 0){
             throw new Error('No update made!');
@@ -59,9 +59,9 @@ app.put('/:musician', async (req, res, next) => {
 });
 
 //! Todo: DELETE/DESTROY MUSICIAN
-app.delete('/:musician', async (req, res, next) => {
+app.delete('/musicians/:id', async (req, res, next) => {
     try{
-        const deleted = await Musician.destroy({where:{name: req.params.body.name}});
+        const deleted = await Musician.destroy({where:{id:req.params.id}});
         if(deleted === 0){
             throw new Error('No musician deleted!')
         }
