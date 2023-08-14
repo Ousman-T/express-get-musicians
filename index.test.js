@@ -5,7 +5,7 @@ execSync('npm run seed');
 
 const request = require("supertest")
 const { db } = require('./db/connection');
-const { Musician } = require('./models/index')
+const { Musician, Band } = require('./models/index')
 const app = require('./src/app');
 const seedMusician = require("./seedData");
 
@@ -45,6 +45,16 @@ describe('./musicians endpoint', () => {
         const response = await request(app).post('/musicians').send(userData);
         expect(response.statusCode).toBe(200);
         expect(response.body.username).toEqual(userData.username);
+    }),
+    it('Can find a bands', async (req, res) => {
+        const response = await request(app).get('/bands/:id');
+        const foundBands = await Band.findByPk(req.params.id);
+        if(foundBands){
+            res.json(foundBands)
+        }else{
+            res.status(404).json({message:'Can not find band'});
+        }
+        expect(foundBands).toBeTruthy();
     })
 
     
