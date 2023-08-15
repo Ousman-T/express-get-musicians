@@ -29,7 +29,9 @@ musicianRouter.get('/:id', async (req, res) => {
 musicianRouter.post('/', [check('name')
 .not()
 .isEmpty().trim(),
-check('instrument').not().isEmpty().trim()],
+check('instrument').not().isEmpty().trim(),
+check('name').isLength({min:2, max:20}).withMessage('Name must be between 2 and 20 characters'),
+check('instrument').isLength({min:2, max:20}).withMessage('Instrument must be between 2 and 20 characters')],
 async (req, res, next) => {
     try{
         const errors = validationResult(req);
@@ -50,7 +52,12 @@ async (req, res, next) => {
 });
 
 // TODO: UPDATE/PUT MUSICIAN
-musicianRouter.put('/:id', async (req, res, next) => {
+musicianRouter.put('/:id',[check('name')
+.not()
+.isEmpty().trim(),
+check('instrument').not().isEmpty().trim(),
+check('name').isLength({min:2, max:20}).withMessage('Name must be between 2 and 20 characters'),
+check('instrument').isLength({min:2, max:20}).withMessage('Instrument must be between 2 and 20 characters')], async (req, res, next) => {
     try{
         const updated = await Musician.update(req.body, {where:{id:req.params.id}});
         console.log(updated);

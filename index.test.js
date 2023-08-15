@@ -60,6 +60,11 @@ describe('./musicians endpoint', () => {
         const response = await response(app).post('/restaurants').send({name:'hi'});
         expect(response.body).toHaveProperty('errors');
         expect(Array.isArray(response.body.errors)).toBe(true);
+    }),
+    it('should return errors array', async (req, res) => {
+        const response = await response(app).post('/restaurants').send({name:'l'});
+        expect(response.body).toHaveProperty('errors');
+        expect(Array.isArray(response.body.errors)).toBe(true);
     })
 
     
