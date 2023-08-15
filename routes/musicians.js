@@ -1,6 +1,7 @@
 const express = require('express');
 const musicianRouter = express.Router();
 const {Musician} = require('../models/index');
+const {check, validationResult} = require('express-validator');
 
 //TODO: Create a GET /musicians route to return all musicians 
 
@@ -25,13 +26,24 @@ musicianRouter.get('/:id', async (req, res) => {
 });
 
 //TODO: CREATE MUSICIAN
-musicianRouter.post('/', async (req, res, next) => {
+musicianRouter.post('/', [check('name')
+.not()
+.isEmpty().trim(),
+check('instrument').not().isEmpty().trim()],
+async (req, res, next) => {
     try{
-        const user = await Musician.create(req.body);
-        if(!user){
-            throw new Error('No user created!');
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            res.json({error: errors.array()});
+        }else{
+
+            const user = await Musician.create(req.body);
+            if(!user){
+                throw new Error('No user created!');
+            }
+            res.send(user.username);
+            // res.json(musicians);
         }
-        res.send(user.username);
     }catch(error){
         next(error);
     }
