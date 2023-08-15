@@ -55,6 +55,11 @@ describe('./musicians endpoint', () => {
             res.status(404).json({message:'Can not find band'});
         }
         expect(foundBands).toBeTruthy();
+    }),
+    it('should return errors array', async (req, res) => {
+        const response = await response(app).post('/restaurants').send({name:'hi'});
+        expect(response.body).toHaveProperty('errors');
+        expect(Array.isArray(response.body.errors)).toBe(true);
     })
 
     
